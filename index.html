@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindNepal | Mental Wellness</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-page" id="authPage">
+        <div class="auth-container">
+            <div class="auth-logo">
+                <div class="logo-icon">MN</div>
+                <h1 class="auth-title">MindNepal</h1>
+                <p class="auth-subtitle">Your mental wellness companion</p>
+            </div>
+
+            <div id="loginForm">
+                <div class="error-message" id="loginError"></div>
+                <div class="form-group">
+                    <input type="email" class="form-input" id="loginEmail" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-input" id="loginPassword" placeholder="Password">
+                </div>
+                <button class="btn btn-primary w-100" onclick="login()">Sign In</button>
+                <div class="auth-footer">
+                    Don't have an account? <span class="auth-link" onclick="showSignup()">Sign Up</span>
+                </div>
+            </div>
+
+            <div id="signupForm" style="display: none;">
+                <div class="error-message" id="signupError"></div>
+                <div class="form-group">
+                    <input type="text" class="form-input" id="signupName" placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-input" id="signupEmail" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-input" id="signupPassword" placeholder="Password (min. 6 characters)">
+                </div>
+                <button class="btn btn-primary w-100" onclick="signup()">Create Account</button>
+                <div class="auth-footer">
+                    Already have an account? <span class="auth-link" onclick="showLogin()">Sign In</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="app" id="mainApp" style="display: none;">
+        <header class="app-header">
+            <div class="header-title" id="headerTitle">Home</div>
+            <div class="header-actions">
+                <button class="icon-btn" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="icon-btn">
+                    <i class="fas fa-bell"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="page active" id="homePage">
+                <div class="welcome-section">
+                    <div class="welcome-text" id="greetingText">Good Morning!</div>
+                    <div class="date-display" id="currentDate">Monday, December 11, 2023</div>
+                </div>
+
+                <div class="quick-actions">
+                    <div class="quick-action" onclick="showPage('moodPage')">
+                        <div class="action-icon">
+                            <i class="fas fa-smile"></i>
+                        </div>
+                        <h5>Mood Check</h5>
+                        <p class="text-sm">How are you feeling?</p>
+                    </div>
+                    <div class="quick-action" onclick="showPage('journalPage')">
+                        <div class="action-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h5>Journal</h5>
+                        <p class="text-sm">Write your thoughts</p>
+                    </div>
+                    <div class="quick-action" onclick="showPage('meditationPage')">
+                        <div class="action-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <h5>Meditate</h5>
+                        <p class="text-sm">Find your calm</p>
+                    </div>
+                    <div class="quick-action" onclick="showPage('communityPage')">
+                        <div class="action-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h5>Community</h5>
+                        <p class="text-sm">Connect & share</p>
+                    </div>
+                </div>
+
+                <div class="card mood-tracker">
+                    <h4 class="mb-2">Today's Mood</h4>
+                    <div class="mood-options">
+                        <div class="mood-option" onclick="selectMood('excited', '😊')">
+                            <span class="mood-emoji">😊</span>
+                            <span class="text-sm">Excited</span>
+                        </div>
+                        <div class="mood-option" onclick="selectMood('happy', '😄')">
+                            <span class="mood-emoji">😄</span>
+                            <span class="text-sm">Happy</span>
+                        </div>
+                        <div class="mood-option active" onclick="selectMood('neutral', '😐')">
+                            <span class="mood-emoji">😐</span>
+                            <span class="text-sm">Neutral</span>
+                        </div>
+                        <div class="mood-option" onclick="selectMood('sad', '😔')">
+                            <span class="mood-emoji">😔</span>
+                            <span class="text-sm">Sad</span>
+                        </div>
+                        <div class="mood-option" onclick="selectMood('anxious', '😰')">
+                            <span class="mood-emoji">😰</span>
+                            <span class="text-sm">Anxious</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h4 class="mb-2">Recent Activity</h4>
+                    <div class="activity-list" id="recentActivity">
+                        <div class="mood-entry">
+                            <div class="mood-emoji-large">😊</div>
+                            <div class="flex-1">
+                                <div class="d-flex justify-between align-center">
+                                    <h5>Excited Mood</h5>
+                                    <span class="text-sm text-light">2 hours ago</span>
+                                </div>
+                                <p class="text-sm text-secondary">Feeling productive today!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" id="moodPage">
+                <h2 class="mb-2">How are you feeling?</h2>
+                <div class="card mb-3">
+                    <div class="mood-options">
+                        <div class="mood-option" onclick="selectMoodForEntry('excited', '😊')">
+                            <span class="mood-emoji">😊</span>
+                            <span class="text-sm">Excited</span>
+                        </div>
+                        <div class="mood-option" onclick="selectMoodForEntry('happy', '😄')">
+                            <span class="mood-emoji">😄</span>
+                            <span class="text-sm">Happy</span>
+                        </div>
+                        <div class="mood-option" onclick="selectMoodForEntry('neutral', '😐')">
+                            <span class="mood-emoji">😐</span>
+                            <span class="text-sm">Neutral</span>
+                        </div>
+                        <div class="mood-option" onclick="selectMoodForEntry('sad', '😔')">
+                            <span class="mood-emoji">😔</span>
+                            <span class="text-sm">Sad</span>
+                        </div>
+                        <div class="mood-option" onclick="selectMoodForEntry('anxious', '😰')">
+                            <span class="mood-emoji">😰</span>
+                            <span class="text-sm">Anxious</span>
+                        </div>
+                    </div>
+                    <textarea class="journal-input mt-2" id="moodNote" placeholder="What's on your mind? Share your thoughts..."></textarea>
+                    <button class="btn btn-primary w-100 mt-2" onclick="saveMoodEntry()">Save Mood Entry</button>
+                </div>
+
+                <h3 class="mb-2">Mood History</h3>
+                <div class="mood-history" id="moodHistory"></div>
+            </div>
+
+            <div class="page" id="journalPage">
+                <h2 class="mb-2">Journal</h2>
+                <div class="card journal-editor">
+                    <textarea class="journal-input" id="journalEntry" placeholder="Write your thoughts, feelings, or reflections..."></textarea>
+                    <button class="btn btn-primary w-100 mt-2" onclick="saveJournalEntry()">Save Journal Entry</button>
+                </div>
+
+                <h3 class="mb-2">Recent Entries</h3>
+                <div class="journal-entries" id="journalEntries"></div>
+            </div>
+
+            <div class="page" id="meditationPage">
+                <h2 class="mb-2">Meditation</h2>
+                <p class="text-secondary mb-3">Find your inner peace with guided sessions</p>
+
+                <div class="meditation-categories">
+                    <div class="category-card" onclick="loadMeditationSessions('sleep')">
+                        <div class="category-icon">💤</div>
+                        <h5>Sleep</h5>
+                        <p class="text-sm">Better rest</p>
+                    </div>
+                    <div class="category-card" onclick="loadMeditationSessions('anxiety')">
+                        <div class="category-icon">😌</div>
+                        <h5>Anxiety</h5>
+                        <p class="text-sm">Find calm</p>
+                    </div>
+                    <div class="category-card" onclick="loadMeditationSessions('focus')">
+                        <div class="category-icon">🎯</div>
+                        <h5>Focus</h5>
+                        <p class="text-sm">Improve concentration</p>
+                    </div>
+                    <div class="category-card" onclick="loadMeditationSessions('stress')">
+                        <div class="category-icon">🌊</div>
+                        <h5>Stress</h5>
+                        <p class="text-sm">Release tension</p>
+                    </div>
+                </div>
+
+                <div class="sessions-list">
+                    <h3 class="mb-2" id="sessionCategoryTitle">Recommended Sessions</h3>
+                    <div id="meditationSessions"></div>
+                </div>
+            </div>
+
+            <div class="page" id="communityPage">
+                <h2 class="mb-2">Community</h2>
+                
+                <div class="community-tabs">
+                    <div class="chip active" onclick="loadCommunityPosts('all')">All Posts</div>
+                    <div class="chip" onclick="loadCommunityPosts('anxiety')">Anxiety</div>
+                    <div class="chip" onclick="loadCommunityPosts('stress')">Stress</div>
+                </div>
+
+                <div class="card mb-3">
+                    <textarea class="journal-input" id="communityPost" placeholder="Share something with the community..." rows="3"></textarea>
+                    <button class="btn btn-primary w-100 mt-2" onclick="createCommunityPost()">Post to Community</button>
+                </div>
+
+                <div id="communityPosts">
+                    <div class="post-card card">
+                        <div class="post-header">
+                            <div class="avatar">AU</div>
+                            <div>
+                                <h5>Anonymous User</h5>
+                                <p class="text-sm text-light">2 hours ago</p>
+                            </div>
+                        </div>
+                        <p>Today I completed my breathing exercises! Small wins! 🎉</p>
+                        <div class="post-actions">
+                            <div class="post-action">
+                                <i class="fas fa-heart"></i>
+                                <span>24</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="fas fa-comment"></i>
+                                <span>8</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" id="profilePage">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profileAvatar">MN</div>
+                    <h2 id="profileName">User Name</h2>
+                    <p class="text-light" id="profileEmail">user@example.com</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card card">
+                        <div class="stat-number" id="moodCount">0</div>
+                        <div class="text-sm">Mood Entries</div>
+                    </div>
+                    <div class="stat-card card">
+                        <div class="stat-number" id="journalCount">0</div>
+                        <div class="text-sm">Journal Entries</div>
+                    </div>
+                    <div class="stat-card card">
+                        <div class="stat-number" id="meditationCount">0</div>
+                        <div class="text-sm">Meditations</div>
+                    </div>
+                </div>
+
+                <div class="settings-list card">
+                    <h3 class="mb-2">Settings</h3>
+                    <div class="setting-item">
+                        <span>Dark Mode</span>
+                        <label class="switch">
+                            <input type="checkbox" id="darkModeToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item" onclick="showHelpSupport()">
+                        <span>Help & Support</span>
+                        <i class="fas fa-chevron-right text-light"></i>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline w-100 mt-3" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sign Out
+                </button>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="showPage('homePage')">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="showPage('moodPage')">
+                <i class="fas fa-smile"></i>
+                <span>Mood</span>
+            </div>
+            <div class="nav-item" onclick="showPage('journalPage')">
+                <i class="fas fa-book"></i>
+                <span>Journal</span>
+            </div>
+            <div class="nav-item" onclick="showPage('meditationPage')">
+                <i class="fas fa-spa"></i>
+                <span>Meditate</span>
+            </div>
+            <div class="nav-item" onclick="showPage('profilePage')">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </div>
+        </nav>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
